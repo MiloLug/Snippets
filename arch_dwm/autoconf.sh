@@ -28,7 +28,7 @@ $installi \
 	gcc make cmake \
 	kitty \
 	maim \
-	xdotool \
+	xdotool xclip \
 	feh \
 	alsa-firmware pulseaudio-alsa libpulse pavucontrol \
 	dmenu \
