@@ -29,9 +29,9 @@ $installi \
 	kitty \
 	maim \
 	xdotool xclip \
+	lxappearance \
 	feh \
 	alsa-firmware pulseaudio-alsa libpulse pavucontrol \
-	dmenu \
 	tar gzip \
 	jre11-openjdk
 
@@ -56,6 +56,24 @@ toaurs
 git clone git://git.suckless.org/dwm
 git clone https://git.suckless.org/slstatus
 
+## FONTS
+sudo $cprf "$AUTODIR/fonts/local.conf" "/etc/fonts/local.conf"
+if $INSTALL_WINDOWS_FONTS; then
+	toaurs
+	git clone https://github.com/MiloLug/SnippetsFonts.git
+fi
+# Windows Fonts
+if $INSTALL_WINDOWS_FONTS; then
+	toaurs
+	cd SnippetsFonts/WindowsFonts
+	
+	cat fonts.tar.gz.part* > fonts.tar.gz
+	tar xzf fonts.tar.gz
+	sudo mv fonts /usr/share/fonts/WindowsFonts
+fi
+toaurs
+rm -rf SnippetsFonts
+
 ## SLSTATUS
 toaurs
 cd slstatus
@@ -76,6 +94,8 @@ sudo chmod +x /etc/X11/xinit/xinitrc
 cat "$AUTODIR/dwm/bash_profile_part.sh" >> "$HOMEDIR/.bash_profile"
 mkdir "$HOMEDIR/dwm.conf.d"
 
+$install dmenu
+
 ## SCREENSHOTS
 sudo $cprf "$AUTODIR/dwm/screenshot" /usr/bin
 sudo chmod +x /usr/bin/screenshot
@@ -95,21 +115,3 @@ sudo chmod +x /etc/vimrc
 ## KITTY
 mkdir -p "$HOMEDIR/.config/kitty"
 $cprf "$AUTODIR/kitty/kitty.conf" "$HOMEDIR/.config/kitty/kitty.conf"
-
-## FONTS
-sudo $cprf "$AUTODIR/fonts/local.conf" "/etc/fonts/local.conf"
-if $INSTALL_WINDOWS_FONTS; then
-	toaurs
-	git clone https://github.com/MiloLug/SnippetsFonts.git
-fi
-# Windows Fonts
-if $INSTALL_WINDOWS_FONTS; then
-	toaurs
-	cd SnippetsFonts/WindowsFonts
-	
-	cat fonts.tar.gz.part* > fonts.tar.gz
-	tar xzf fonts.tar.gz
-	sudo mv fonts /usr/share/fonts/WindowsFonts
-fi
-toaurs
-rm -rf SnippetsFonts
