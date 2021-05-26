@@ -33,3 +33,7 @@ sudo xbps-install -S \
   --prefix=/usr
 make VIMRUNTIMEDIR=/usr/share/vim/vim82
 sudo make install
+
+
+sudo xbps-install -S postgresql postgresql-contrib postgresql-client
+# optional postgresql-devel postgresql-libs postgresql-libs-devel
