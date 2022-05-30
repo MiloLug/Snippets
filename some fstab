@@ -1,0 +1,2 @@
+#windows D:/ - /dev/sdaX
+UUID=DE86DACF86DAA6F5                     /mnt/win_d      ntfs-3g   rw,defaults,nls=utf8,umask=000,uid=1000,gid=1000 0 0

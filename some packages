@@ -1,0 +1,33 @@
+Times New Roman and oether...----
+sudo apt-get install ttf-mscorefonts-installer
+
+LAMP-----------------------------
+sudo apt install apache2
+https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04
+  sudo apt install mariadb-server
+    - sudo mysql_secure_installation
+  
+sudo apt install php libapache2-mod-php php-mysql
+  /etc/php/7.4/apache2/php.ini
+    file_uploads = On
+    allow_url_fopen = On
+    short_open_tag = On
+    memory_limit = 256M
+    upload_max_filesize = 100M
+    max_execution_time = 360
+    max_input_vars = 1500
+    date.timezone = Europe/Kiev
+
+sudo apt install phpmyadmin
+  apache conf: Include /etc/phpmyadmin/apache.conf
+  
+Node.js----------------------------
+  because new links: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04
+
+-----------------------------------
+Add tools to all the path
+1. /etc/environment
+2. sudo visudo -> secure_path
+
+Diodon-----------------------------
+sudo add-apt-repository ppa:diodon-team/stable

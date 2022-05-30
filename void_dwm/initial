@@ -1,0 +1,39 @@
+https://github.com/gch1p/voidnsrun
+
+sudo voidnsrun -r /glibc xbps-install freetype fontconfig libXft xorg-fonts
+
+sudo xbps-install -S \
+  ruby-devel \
+  python3-devel \
+  libX11-devel \
+  atk-devel \
+  ncurses-devel \
+  gtk+3-devel \
+  libSM-devel \
+  libXt-devel \
+  libXaw-devel \
+  libXmu-devel \
+  xorg-server-devel
+
+./configure \
+  --with-features=huge \
+  --enable-multibyte \
+  --enable-rubyinterp \
+  --enable-python3interp \
+  --with-python3-command=python3.9 \
+  --with-python-config-dir=/usr/lib/python3.9/config-3.9-x86_64-linux-gnu \
+  --enable-perlinterp \
+  --enable-luainterp \
+  --enable-gui=auto \
+  --enable-gtk3-check \
+  --enable-cscope \
+  --with-x \
+  --enable-gnome-check \
+  --cache-file=/dev/null \
+  --prefix=/usr
+make VIMRUNTIMEDIR=/usr/share/vim/vim82
+sudo make install
+
+
+sudo xbps-install -S postgresql postgresql-contrib postgresql-client
+# optional postgresql-devel postgresql-libs postgresql-libs-devel

@@ -1,0 +1,46 @@
+#prompt in posix style
+used symbols:
+┏[some info]\n┗╸<command here>
+
+
+#create a simple prompt
+#current/dir$ .... - default
+#[projects] $ - in the "projects" dir
+#[projects: proj name] $ - in any of projects/ subdir
+
+#BLACK=$(tput setaf 0)
+#RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+#LIME_YELLOW=$(tput setaf 190)
+#YELLOW=$(tput setaf 3)
+#POWDER_BLUE=$(tput setaf 153)
+BLUE=$(tput setaf 4)
+#MAGENTA=$(tput setaf 5)
+#CYAN=$(tput setaf 6)
+#WHITE=$(tput setaf 7)
+#BRIGHT=$(tput bold)
+NORMAL=$(tput sgr0)
+#BLINK=$(tput blink)
+#REVERSE=$(tput smso)
+#UNDERLINE=$(tput smul)
+
+if [ "$color_prompt" = yes ]; then
+    PS1_def='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1_def='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+
+function rc_create_PS1() {
+    if [[ "$PWD" =~ (^|/)projects(/|$) ]] ; then
+        pwd_base_name=`basename "$PWD"`
+        if [[ "$pwd_base_name" = "projects" ]] ; then
+            echo -e "\001${BLUE}\002[projects] \001${GREEN}\002\$\001${NORMAL}\002 "
+        else
+            echo -e "\001${BLUE}\002[projects:\001${GREEN}\002 $pwd_base_name\001${BLUE}\002] \001${GREEN}\002\$\001${NORMAL}\002 "
+        fi
+    else
+        echo -e "\001${BLUE}\002$(dirs)\001${GREEN}\002\$\001${NORMAL}\002 "
+    fi
+}
+
+PS1='$(rc_create_PS1)'

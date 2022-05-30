@@ -1,0 +1,66 @@
+
+#!/bin/bash
+
+# A simple wrapper around maim
+#
+# When run, the screenshot will be added to the clipboard
+# The file path will be put in the primary selection
+# Will create notification containing file path
+#
+# If you have a project specified, it will put the sceenshot in that folder instead of /tmp
+#
+# Relies on maim for taking screenshot
+# If you give it the -o flag for ocr, it needs tesseract
+
+path='/tmp'
+command -v maim > /dev/null && screenshooter="maim" || ( echo -n "You need to install maim\nhttps://github.com/naelstrof/maim" && exit 1 )
+ocr="false"
+
+#If a project is set we will put screenshots in the project's folder
+command -v project > /dev/null && project=$(project current --path)
+if [ -n "$project" ]; then
+	path="$project/screenshots"
+	#Make the directory if it doesn't exist
+	mkdir "$path" 2> /dev/null
+fi
+
+filename="$(date +"%Y-%m-%dT%H-%M-%SZ").png"
+file="${path}/${filename}"
+
+[ "$1" = "-w" ] && sleep "$2" && shift && shift
+[ "$1" = "-o" ] && ocr="true" && shift
+
+case $1 in
+	"window")
+		maim -i $(xdotool getactivewindow) "$file"
+		;;
+	"select")
+		maim -s -r crosshair "$file"
+		#maim -s -c 1,1,0,0.2 -l "$file"
+		;;
+	*)
+		maim "$file"
+		;;
+esac
+
+if [ -f "$file" ]; then
+	if [ "$ocr" == "true" ]; then
+		# Input and output files look the same because tesseract adds .txt to whatever we give as the output file
+
+		tesseract "$file" "$file"
+		LINES=$(wc -l < "${file}.txt")
+		if [ "$LINES" -eq 0 ]; then
+			notify-send "ocr" "no text was detected\nimage file at $file"
+			exit 1
+		fi
+		cat "${file}.txt" | xclip -selection clipboard
+		echo -n "${file}.txt" | xclip -selection primary
+	else
+		# Copies the image to your clipboard (ctrl + v)
+		xclip -selection clipboard -target image/png -i "$file"
+		# Copies the filename to primary selection (shift + insert or middle mouse)
+		echo -n "$file" | xclip -selection primary
+		# Creates notification with file name
+		notify-send "New Screenshot" "$file"
+	fi
+fi

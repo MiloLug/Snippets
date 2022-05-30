@@ -1,0 +1,27 @@
+#!/bin/sh
+xrandr --output HDMI-1 --left-of eDP-1
+xrandr --output HDMI-1 --brightness 1.2
+xrandr --output HDMI-1 --gamma 1.1:1:.8
+
+# LAYOUTS
+setxkbmap -layout us,ru,ua
+setxkbmap -option 'grp:alt_shift_toggle'
+
+# SLSTATUS
+slstatus </dev/null &>/dev/null &
+
+# DWM
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+while true; do
+  # BACKGROUND
+  bg_file=~/dwm.conf.d/bg.jpg
+  if test -f "$bg_file"; then
+    feh --bg-fill "$bg_file"
+  fi
+
+  # Log stderror to a file 
+  #dwm 2> ~/.dwm.log
+  # No error logging
+  dwm >/dev/null 2>&1
+done
